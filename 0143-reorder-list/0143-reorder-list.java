@@ -9,34 +9,28 @@
  * }
  */
 class Solution {
-    public void reorderList(ListNode head) {
-        Stack<ListNode> s = new Stack<ListNode>();
-        Queue<ListNode> q= new LinkedList<>();
-        ListNode h=head;
-        int n=0;
-        while(h!=null)
+    public ListNode helper(int l,int r,List<ListNode>list)
+    {
+        if(l==r)
         {
-            q.add(h);
-            s.push(h);
-            n++;
-            h=h.next;
+            list.get(l).next=null;
+            return list.get(l);
         }
-        ListNode curr=head;
-        for(int i=1;i<n;i++)
+        if(l>r)
+            return null;
+        
+        list.get(l).next=list.get(r);
+        list.get(r).next=helper(l+1,r-1,list);
+        return list.get(l);
+    }
+    public void reorderList(ListNode h) {
+        List<ListNode>list=new ArrayList<>();
+        ListNode head=h;
+        while(head!=null)
         {
-            if(i%2==1)
-            {
-                ListNode t=q.remove();
-                t.next=s.peek();
-                curr=s.peek();
-            }
-            else
-            {
-                ListNode te=s.pop();
-                te.next=q.peek();
-                curr=q.peek();
-            }
+            list.add(head);
+            head=head.next;
         }
-        curr.next=null;
+        helper(0,list.size()-1,list);
     }
 }
