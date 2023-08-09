@@ -1,41 +1,39 @@
 class Solution {
-    public boolean helper(int[][] prerequisites,int i,int visited[],int dis[])
+    HashMap<Integer,Boolean>map=new HashMap<>();
+    public boolean helper(int[][] pre,int visited[],int i)
     {
-        //  int flag=0;
-            dis[i]=1;
-            visited[i]=1;
-         for(int j=0;j<prerequisites.length;j++)
-         {
-             if(prerequisites[j][0]==i)
-             {
-                //  flag=1;
-                 if(visited[prerequisites[j][1]]==0)
-                 {
-                 if(helper(prerequisites,prerequisites[j][1],visited,dis))
-                     return true;
-                 }
-                 else if(dis[prerequisites[j][1]]==1)
-                 {
-                     return true;
-                 }
-             }
-         }
-         dis[i]=0;
-        //  if(flag==0)
-        //  return false;
-         return false;
-    }
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        int visited[]=new int[numCourses];
-        int dis[]=new int[numCourses];
-        for(int i=0;i<numCourses;i++)
+        visited[i]=1;
+        boolean ans=true;
+        for(int j=0;j<pre.length;j++)
         {
-            if(visited[i]==0)
+            if(pre[j][0]==i&&visited[pre[j][1]]==1)
             {
-                if(helper(prerequisites,i,visited,dis))
                 return false;
             }
+            if(pre[j][0]==i&&visited[pre[j][1]]==0)
+            {
+                if(map.containsKey(j))
+                {
+                    ans=ans&&map.get(j);
+                }
+                else
+                {
+                    boolean temp=helper(pre,visited,pre[j][1]);
+                    ans=ans&&temp;
+                    map.put(j,temp);
+                }
+            }
         }
-        return true;
+        visited[i]=0;
+        return ans;
+    }
+    public boolean canFinish(int num, int[][] pre) {
+        int visited[]=new int[num];
+        boolean ans=true;
+        for(int i=0;i<pre.length;i++)
+            if(!map.containsKey(i))
+        ans=ans&&helper(pre,visited,pre[i][0]);
+        
+        return ans;
     }
 }
