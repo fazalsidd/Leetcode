@@ -1,44 +1,37 @@
 class Solution {
-    public boolean check(int l,int r,String s)
+    public String helper(int l,int r,String s)
     {
-        while(l<r)
+        while(l>=0&&r<s.length())
         {
             if(s.charAt(l)!=s.charAt(r))
-                return false;
-            l++;
-            r--;
+            {
+                return s.substring(l+1,r);
+            }
+            l--;
+            r++;
         }
-        return true;
+        if(l<0)
+            return s.substring(0,r);
+        
+        return s.substring(l+1,r);
     }
     public String longestPalindrome(String s) {
-        HashMap<Character,ArrayList<Integer>> map=new HashMap<>();
-        int max=-1;
+        int dp[]=new int[s.length()];
+        dp[0]=0;
+        int max=1;
         String ans=s.substring(0,1);
         for(int i=0;i<s.length();i++)
         {
-            char c=s.charAt(i);
-            if(map.containsKey(c))
-            {
-                for(int j=0;j<map.get(c).size();j++)
+            String p=helper(i,i,s);
+            String q=helper(i,i+1,s);
+            if(p.length()>max)
+               { max=p.length();
+                ans=p;}
+            if(q.length()>max)
                 {
-                   if(check(map.get(c).get(j),i,s))
-                   {
-                       if(i-map.get(c).get(j)+1>max)
-                       {
-                       ans=s.substring(map.get(c).get(j),i+1);
-                           max=i-map.get(c).get(j)+1;
-                       }
-                       break;
-                   }
+                max=q.length();
+                ans=q;
                 }
-                ArrayList<Integer> list=map.get(c);
-                list.add(i);
-                map.put(c,list);
-            }
-            else
-            {
-               map.put(c, new ArrayList<Integer>(Arrays.asList(i))); 
-            }
         }
         return ans;
     }
