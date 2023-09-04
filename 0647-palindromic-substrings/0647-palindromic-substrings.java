@@ -1,28 +1,25 @@
 class Solution {
-    public int countSubstrings(String s) {
-     ArrayList<Integer>[] dp = new ArrayList[s.length()];
-        char[] c = s.toCharArray();
-        int ans=0;
-        for (int i = 0; i < s.length(); i++) {
-            dp[i] = new ArrayList<Integer>();
-        }
-        dp[0].add(0);
-        ans++;
-        for(int i=1;i<s.length();i++)
+    public int helper(String s,int l,int r)
+    {
+        int count=0;
+        while(l>=0&&r<s.length())
         {
-            dp[i].add(i);
-            for(int j=0;j<dp[i-1].size();j++)
+            if(s.charAt(l)!=s.charAt(r))
             {
-                int index=dp[i-1].get(j);
-                if(index!=0)
-                {
-                    if(c[index-1]==c[i])
-                        dp[i].add(index-1);
-                }
+                return count;
             }
-            if(c[i]==c[i-1]&&!dp[i].contains(i-1))
-                dp[i].add(i-1);
-            ans+=dp[i].size();
+            l--;
+            r++;
+            count++;
+        }
+        return count;
+    }
+    public int countSubstrings(String s) {
+        int ans=0;
+        for(int i=0;i<s.length();i++)
+        {
+           ans+=helper(s,i,i+1);
+            ans+=helper(s,i,i);
         }
         return ans;
     }
