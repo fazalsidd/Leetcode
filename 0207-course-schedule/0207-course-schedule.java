@@ -1,39 +1,47 @@
 class Solution {
-    HashMap<Integer,Boolean>map=new HashMap<>();
-    public boolean helper(int[][] pre,int visited[],int i)
+    public boolean helper(int[][] pre,int i,int visited[],HashMap<Integer,ArrayList<Integer>>map)
     {
-        visited[i]=1;
-        boolean ans=true;
-        for(int j=0;j<pre.length;j++)
+        if(visited[i]!=0)
         {
-            if(pre[j][0]==i&&visited[pre[j][1]]==1)
-            {
+            if(visited[i]==-1)
                 return false;
-            }
-            if(pre[j][0]==i&&visited[pre[j][1]]==0)
-            {
-                if(map.containsKey(j))
-                {
-                    ans=ans&&map.get(j);
-                }
-                else
-                {
-                    boolean temp=helper(pre,visited,pre[j][1]);
-                    ans=ans&&temp;
-                    map.put(j,temp);
-                }
-            }
+            else
+                return true;
         }
-        visited[i]=0;
-        return ans;
+        if(!map.containsKey(i))
+            return true;
+        visited[i]=-1;
+        for(int j=0;j<map.get(i).size();j++)
+        {
+            if(!helper(pre,map.get(i).get(j),visited,map))
+                return false;
+        }
+        visited[i]=1;
+        return true;
     }
     public boolean canFinish(int num, int[][] pre) {
         int visited[]=new int[num];
-        boolean ans=true;
+        HashMap<Integer,ArrayList<Integer>>map=new HashMap<>();
         for(int i=0;i<pre.length;i++)
-            if(!map.containsKey(i))
-        ans=ans&&helper(pre,visited,pre[i][0]);
-        
-        return ans;
+        {
+            if(map.containsKey(pre[i][0]))
+            {
+                ArrayList<Integer>list=map.get(pre[i][0]);
+                list.add(pre[i][1]);
+                map.put(pre[i][0],list);
+            }
+            else
+            {
+                ArrayList<Integer>list=new ArrayList<>();
+                list.add(pre[i][1]);
+                map.put(pre[i][0],list);
+            }
+        }
+        for(int i=0;i<num;i++)
+        {
+                if(!helper(pre,i,visited,map))
+                    return false;
+        }
+        return true;
     }
 }
