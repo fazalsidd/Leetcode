@@ -7,8 +7,6 @@ class Solution {
             nums[i]=(double)dist[i]/speed[i];
         }
         Arrays.sort(nums);
-        for(i=0;i<speed.length;i++)
-           System.out.println(nums[i]);
         int ans=1;
         int k=1;
         i=1;
