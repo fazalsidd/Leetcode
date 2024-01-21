@@ -1,21 +1,31 @@
 class Solution {
-    public int helper(int[] nums,int t,int i,int dp[])
-    {
-        if(i>=t)
-            return 0;
-        if(dp[i]!=-1)
-            return dp[i];
-        int inc=nums[i]+helper(nums,t,i+2,dp);
-        int exc=helper(nums,t,i+1,dp);
-        
-        return dp[i]=Math.max(inc,exc);
+    public int check(int[] nums) {
+        if(nums.length==1)
+            return nums[0];
+        if(nums.length==2)
+            return Math.max(nums[0],nums[1]);
+        int dp[]=new int[nums.length];
+        dp[0]=nums[0];
+        dp[1]=nums[1];
+        for(int i=2;i<nums.length;i++)
+        {
+            for(int j=0;j<i-1;j++)
+            dp[i]=Math.max(dp[i],nums[i]+dp[j]);
+        }
+        return Math.max(dp[nums.length-1],dp[nums.length-2]);
     }
     public int rob(int[] nums) {
-        int dp[]=new int[nums.length];
-        Arrays.fill(dp,-1);
-        int inc=nums[0]+helper(nums,nums.length-1,2,dp);
-        Arrays.fill(dp,-1);
-        int exc=helper(nums,nums.length,1,dp);
-        return Math.max(inc,exc);
+        if(nums.length==1)
+            return nums[0];
+         if(nums.length==2)
+            return Math.max(nums[0],nums[1]);
+        int ans=0;
+        int arr[]=new int[nums.length-1];
+        for(int i=0;i<nums.length-1;i++)
+            arr[i]=nums[i];
+        ans=check(arr);
+        for(int i=1;i<nums.length;i++)
+            arr[i-1]=nums[i];
+        return Math.max(ans,check(arr));
     }
 }
