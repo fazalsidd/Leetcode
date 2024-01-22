@@ -4,35 +4,23 @@ class Solution {
         while(l>=0&&r<s.length())
         {
             if(s.charAt(l)!=s.charAt(r))
-            {
-                return s.substring(l+1,r);
-            }
+                break;
             l--;
             r++;
         }
-        if(l<0)
-            return s.substring(0,r);
-        
         return s.substring(l+1,r);
     }
     public String longestPalindrome(String s) {
-        int dp[]=new int[s.length()];
-        dp[0]=0;
-        int max=1;
-        String ans=s.substring(0,1);
-        for(int i=0;i<s.length();i++)
+       String ans="";
+        for(int i=0;i<s.length()-1;i++)
         {
-            String p=helper(i,i,s);
-            String q=helper(i,i+1,s);
-            if(p.length()>max)
-               { max=p.length();
-                ans=p;}
-            if(q.length()>max)
-                {
-                max=q.length();
-                ans=q;
-                }
+            String temp1=helper(i,i,s);
+            String temp2=helper(i,i+1,s);
+            if(temp1.length()>ans.length())
+                ans=temp1;
+            if(temp2.length()>ans.length())
+                ans=temp2;
         }
-        return ans;
+        return ans.length()==0?s:ans;
     }
 }
