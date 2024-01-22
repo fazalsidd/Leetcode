@@ -8,10 +8,10 @@ class Solution {
             dp[i]=1;
             for(int j=0;j<i;j++)
             {
-                if(nums[j]<nums[i])
-                dp[i]=Math.max(dp[i],1+dp[j]);
+                if(nums[i]>nums[j])
+                    dp[i]=Math.max(dp[i],1+dp[j]);
             }
-            ans=Math.max(ans,dp[i]);
+            ans=Math.max(dp[i],ans);
         }
         return ans;
     }
