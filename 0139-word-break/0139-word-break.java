@@ -1,26 +1,26 @@
 class Solution {
-    public boolean helper(String s, List<String> w,int l,int r,HashMap<String,Boolean> map)
-    {
-        if(l>r)
-            return true;
-        
-        if(map.containsKey(s.substring(l,r+1)))
-            return map.get(s.substring(l,r+1));
-        
-        for(int i=l;i<=r;i++)
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Boolean dp[]=new Boolean[s.length()];
+        Arrays.fill(dp,false);
+        for(int i=0;i<s.length();i++)
         {
-            if(w.contains(s.substring(l,i+1))&&helper(s,w,i+1,r,map))
+            for(int j=i;j>=0;j--)
             {
-                map.put(s.substring(l,r+1),true);
-                return true;
+                if(j==0)
+                {
+                    if(wordDict.contains(s.substring(0,i+1)))
+                    dp[i]=true;
+                }
+                else
+                {
+                    if(dp[j-1]&&wordDict.contains(s.substring(j,i+1)))
+                    {
+                        dp[i]=true;
+                        break;
+                    }
+                }
             }
         }
-        
-        map.put(s.substring(l,r+1),false);
-        return false;
-    }
-    public boolean wordBreak(String s, List<String> w) {
-        HashMap<String,Boolean> map=new HashMap<>();
-        return helper(s,w,0,s.length()-1,map);
+        return dp[s.length()-1];
     }
 }
