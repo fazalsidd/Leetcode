@@ -1,26 +1,24 @@
 class Solution {
-    public int helper(String s,int l,int r)
+    public int helper(int l,int r,String s)
     {
-        int count=0;
+        int ans=0;
         while(l>=0&&r<s.length())
         {
             if(s.charAt(l)!=s.charAt(r))
-            {
-                return count;
-            }
+                break;
             l--;
             r++;
-            count++;
+            ans++;
         }
-        return count;
+        return ans;
     }
     public int countSubstrings(String s) {
         int ans=0;
-        for(int i=0;i<s.length();i++)
+        for(int i=0;i<s.length()-1;i++)
         {
-           ans+=helper(s,i,i+1);
-            ans+=helper(s,i,i);
+            ans+=helper(i,i,s);
+            ans+=helper(i,i+1,s);
         }
-        return ans;
+        return ans+1;
     }
 }
