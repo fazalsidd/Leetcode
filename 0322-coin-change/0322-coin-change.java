@@ -1,25 +1,16 @@
 class Solution {
-    public int helper(int[] coins, int a,int j,int dp[][])
-    {
-        if(a==0)
-            return 0;
-        if(dp[a][j]!=-1)
-            return dp[a][j];
-        int ans=100000;
-        for(int i=j;i<coins.length;i++)
+    public int coinChange(int[] coins, int a) {
+        int dp[]=new int[a+1];
+        Arrays.fill(dp,100000);
+        dp[0]=0;
+        for(int i=1;i<=a;i++)
         {
-            if(a-coins[i]>=0)
+            for(int j=0;j<coins.length;j++)
             {
-                ans=Math.min(ans,1+helper(coins,a-coins[i],i,dp));
+                if(i-coins[j]>=0)
+                    dp[i]=Math.min(dp[i],1+dp[i-coins[j]]);
             }
         }
-        return dp[a][j]=ans;
-        
-    }
-    public int coinChange(int[] coins, int a) {
-        int dp[][]=new int[a+1][coins.length];
-        Arrays.stream(dp).forEach(b -> Arrays.fill(b, -1));
-        int ans=helper(coins,a,0,dp);
-        return ans>=100000?-1:ans;
+        return dp[a]>=100000?-1:dp[a];
     }
 }
