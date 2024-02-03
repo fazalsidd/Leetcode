@@ -1,33 +1,23 @@
 class Solution {
-    public void helper(int[] can, int t,List<List<Integer>> ans,List<Integer> list,HashMap<String,Integer> map,int vis[])
+    List<List<Integer>> ans=new ArrayList<>();
+    public void helper(int[] can, int t,int i,ArrayList<Integer> list)
     {
-        if(t==0)
-        {
-           String s=Arrays.toString(vis);
-            if(!map.containsKey(s))
-            {
-                map.put(s,1);
-            ans.add(new ArrayList(list));
-            }
-            return;
-        }
         if(t<0)
             return;
-        for(int i=0;i<can.length;i++)
+        if(t==0)
         {
-            vis[i]++;
-            list.add(can[i]);
-            helper(can,t-can[i],ans,list,map,vis);
+            ans.add(new ArrayList(list));
+        }
+        for(int j=i;j<can.length;j++)
+        {
+            list.add(can[j]);
+            helper(can,t-can[j],j,list);
             list.remove(list.size()-1);
-            vis[i]--;
         }
     }
     public List<List<Integer>> combinationSum(int[] can, int t) {
-        List<List<Integer>> ans=new ArrayList<>();
-        List<Integer> list=new ArrayList<>();
-        HashMap<String,Integer> map=new HashMap<>();
-        int vis[]=new int[can.length];
-        helper(can,t,ans,list,map,vis);
+        ArrayList<Integer> list=new ArrayList<>();
+        helper(can,t,0,list);
         return ans;
     }
 }
