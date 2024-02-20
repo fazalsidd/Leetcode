@@ -1,7 +1,8 @@
 class Solution {
-    public boolean check(int l,int r,String s)
+    ArrayList<List<String>> ans=new ArrayList<>();
+    public boolean palindrome(int l,int r,String s)
     {
-        while(l<r)
+        while(l<=r)
         {
             if(s.charAt(l)!=s.charAt(r))
                 return false;
@@ -10,30 +11,27 @@ class Solution {
         }
         return true;
     }
-    public void helper(String s,List<String> list,List<List<String>> ans,int l,int r,int count)
+    public void helper(int l,String s,ArrayList<String> list)
     {
-        if(r==s.length())
+        if(l>=s.length())
         {
-            if(count==s.length())
             ans.add(new ArrayList(list));
+            
             return;
         }
-        if(check(l,r,s))
+        for(int i=l;i<s.length();i++)
         {
-            list.add(s.substring(l,r+1));
-            helper(s,list,ans,r+1,r+1,count+(r-l+1));
-            list.remove(list.size()-1);
-            helper(s,list,ans,l,r+1,count);
-        }
-        else
-        {
-            helper(s,list,ans,l,r+1,count);
+            if(palindrome(l,i,s))
+            {
+                list.add(s.substring(l,i+1));
+                helper(i+1,s,list);
+                list.remove(list.size()-1);
+            }
         }
     }
     public List<List<String>> partition(String s) {
-        List<String> list=new ArrayList<>();
-        List<List<String>> ans=new ArrayList<>();
-        helper(s,list,ans,0,0,0);
+        ArrayList<String> list=new ArrayList<>();
+        helper(0,s,list);
         return ans;
     }
 }
