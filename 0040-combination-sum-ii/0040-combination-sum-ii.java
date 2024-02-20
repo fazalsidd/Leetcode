@@ -1,30 +1,31 @@
 class Solution {
-    public void helper(int[] can, int t,List<List<Integer>> ans,List<Integer> list,int i)
+    ArrayList<List<Integer>> ans=new ArrayList<>();
+    public void helper(ArrayList<Integer> list,int j,int[] nums,int tar)
     {
-        if(t==0)
+        if(tar==0)
         {
             ans.add(new ArrayList(list));
+        }
+        if(j>=nums.length||tar<0)
+        {
             return;
         }
-        if(t<0)
-            return ;
-        int prev=0;
-        for(int j=i;j<can.length;j++)
+        int dub=100;
+        for(int i=j;i<nums.length;i++)
         {
-            if(can[j]!=prev)
+            if(nums[i]!=dub)
             {
-                prev=can[j];
-                list.add(can[j]);
-                helper(can,t-can[j],ans,list,j+1);
+                list.add(nums[i]);
+                helper(list,i+1,nums,tar-nums[i]);
                 list.remove(list.size()-1);
+                dub=nums[i];
             }
         }
     }
-    public List<List<Integer>> combinationSum2(int[] can, int t) {
-        Arrays.sort(can);
-        List<List<Integer>> ans=new ArrayList<>();
-        List<Integer> list=new ArrayList<>();
-        helper(can,t,ans,list,0);
+    public List<List<Integer>> combinationSum2(int[] nums, int target) {
+        Arrays.sort(nums);
+        ArrayList<Integer> list=new ArrayList<>();
+        helper(list,0,nums,target);
         return ans;
     }
 }
