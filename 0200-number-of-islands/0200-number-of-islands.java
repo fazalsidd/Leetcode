@@ -1,17 +1,14 @@
 class Solution {
-    public void helper(char[][] g,int i,int j)
+    public void helper(char[][] grid,int i,int j)
     {
-        if(i<0||j<0||i>=g.length||j>=g[0].length)
+        if(i<0||i>=grid.length||j<0||j>=grid[0].length||grid[i][j]=='0')
             return;
-        if(g[i][j]=='2')
-            return;
-        if(g[i][j]=='0')
-            return;
-        g[i][j]='2';
-        helper(g,i+1,j);
-        helper(g,i,j+1);
-        helper(g,i-1,j);
-        helper(g,i,j-1);
+        
+        grid[i][j]='0';
+        helper(grid,i+1,j);
+        helper(grid,i,j+1);
+        helper(grid,i-1,j);
+        helper(grid,i,j-1);
     }
     public int numIslands(char[][] grid) {
         int ans=0;
@@ -21,8 +18,8 @@ class Solution {
             {
                 if(grid[i][j]=='1')
                 {
-                    ans++;
                     helper(grid,i,j);
+                    ans++;
                 }
             }
         }
