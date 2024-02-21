@@ -1,28 +1,25 @@
 class Solution {
-    public static String[] keypad={"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
-     ArrayList<String> ans = new ArrayList<String>();
-    public static void xxx(String digits,int idx,String combination,List<String> ans) 
+    String key[]={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    ArrayList<String> ans=new ArrayList<>();
+    public void helper(String dig,int i,String s)
     {
-        if(idx==digits.length())
+        if(i>=dig.length())
         {
-            ans.add(combination);
+            ans.add(s);
             return;
         }
-     char c=digits.charAt(idx);
-        String mapping=keypad[c-'2'];
-        for(int i=0;i<mapping.length();i++)
+        int k=Integer.parseInt(dig.charAt(i)+"");
+        String temp=key[k];
+        for(int j=0;j<temp.length();j++)
         {
-            xxx(digits,idx+1,combination+mapping.charAt(i),ans);
+            String t=s+temp.charAt(j);
+            helper(dig,i+1,t);
         }
     }
-    public List<String> letterCombinations(String digits) {
-        int idx=0;
-        String combination="";
-        if(digits.length()==0)
-        {
+    public List<String> letterCombinations(String dig) {
+        if(dig.equals(""))
             return ans;
-        }
-        xxx(digits,idx,combination,ans);
+        helper(dig,0,"");
         return ans;
     }
 }
