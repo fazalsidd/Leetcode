@@ -1,46 +1,36 @@
 class Solution {
-    public boolean helper(int[][] pre,int i,int visited[],HashMap<Integer,ArrayList<Integer>>map)
+    public boolean helper(int num,ArrayList<ArrayList<Integer>> adj,Boolean dp[],int vis[],int i)
     {
-        if(visited[i]!=0)
-        {
-            if(visited[i]==-1)
-                return false;
-            else
-                return true;
-        }
-        if(!map.containsKey(i))
+        if(dp[i]!=null)
+            return dp[i];
+        if(vis[i]==1)
             return true;
-        visited[i]=-1;
-        for(int j=0;j<map.get(i).size();j++)
+        vis[i]=1;
+        ArrayList<Integer> list=adj.get(i);
+        boolean ans=false;
+        for(int j=0;j<list.size();j++)
         {
-            if(!helper(pre,map.get(i).get(j),visited,map))
-                return false;
+            ans=ans||helper(num,adj,dp,vis,list.get(j));
         }
-        visited[i]=1;
-        return true;
+        vis[i]=0;
+        return dp[i]=ans;
     }
     public boolean canFinish(int num, int[][] pre) {
-        int visited[]=new int[num];
-        HashMap<Integer,ArrayList<Integer>>map=new HashMap<>();
+        Boolean dp[]=new Boolean[num];
+        int vis[]=new int[num];
+        ArrayList<ArrayList<Integer>> adj=new ArrayList<>();
+        for(int i=0;i<num;i++)
+        {
+            adj.add(new ArrayList<>());
+        }
         for(int i=0;i<pre.length;i++)
         {
-            if(map.containsKey(pre[i][0]))
-            {
-                ArrayList<Integer>list=map.get(pre[i][0]);
-                list.add(pre[i][1]);
-                map.put(pre[i][0],list);
-            }
-            else
-            {
-                ArrayList<Integer>list=new ArrayList<>();
-                list.add(pre[i][1]);
-                map.put(pre[i][0],list);
-            }
+            adj.get(pre[i][0]).add(pre[i][1]);
         }
         for(int i=0;i<num;i++)
         {
-                if(!helper(pre,i,visited,map))
-                    return false;
+            if(helper(num,adj,dp,vis,i))
+                return false;
         }
         return true;
     }
