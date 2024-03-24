@@ -1,9 +1,10 @@
 class Solution {
-    public String helper(int l,int r,String s)
+    
+    public String helper(int l,int r,char[] arr,String s)
     {
-        while(l>=0&&r<s.length())
+        while(l>=0&&r<arr.length)
         {
-            if(s.charAt(l)!=s.charAt(r))
+            if(arr[l]!=arr[r])
                 break;
             l--;
             r++;
@@ -11,16 +12,17 @@ class Solution {
         return s.substring(l+1,r);
     }
     public String longestPalindrome(String s) {
-       String ans="";
+     String ans=s.charAt(0)+"";
+        char[] arr=s.toCharArray();
         for(int i=0;i<s.length()-1;i++)
         {
-            String temp1=helper(i,i,s);
-            String temp2=helper(i,i+1,s);
-            if(temp1.length()>ans.length())
-                ans=temp1;
-            if(temp2.length()>ans.length())
-                ans=temp2;
+            String odd=helper(i,i,arr,s);
+            String even=helper(i,i+1,arr,s);
+            if(odd.length()>ans.length())
+                ans=odd;
+            if(even.length()>ans.length())
+                ans=even;
         }
-        return ans.length()==0?s:ans;
+        return ans;
     }
 }
