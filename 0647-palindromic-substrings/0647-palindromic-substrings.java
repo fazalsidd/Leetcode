@@ -4,21 +4,21 @@ class Solution {
         int ans=0;
         while(l>=0&&r<s.length())
         {
-            if(s.charAt(l)!=s.charAt(r))
+            if(s.charAt(l)==s.charAt(r))
+                ans+=1;
+            else 
                 break;
             l--;
             r++;
-            ans++;
         }
         return ans;
     }
     public int countSubstrings(String s) {
         int ans=0;
-        for(int i=0;i<s.length()-1;i++)
+        for(int i=0;i<s.length();i++)
         {
-            ans+=helper(i,i,s);
-            ans+=helper(i,i+1,s);
+            ans+=helper(i,i+1,s)+helper(i,i,s);
         }
-        return ans+1;
+        return ans;
     }
 }
