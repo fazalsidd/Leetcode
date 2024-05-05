@@ -1,53 +1,48 @@
 class Solution {
-    public int sum(String s,int v)
+    public int helper(String s1, String s2,int i,int j,int dp[][])
     {
-        int su=0;
-        for(int i=v;i<s.length();i++)
+        if(i==s1.length()&&j==s2.length())
+            return 0;
+        
+        if(i==s1.length())
         {
-            su+=(int)s.charAt(i);
+            int count=0;
+            while(j<s2.length())
+            {
+                count+=s2.charAt(j);
+                j++;
+            }
+            return count;
         }
-        return su;
-    }
-    public int minimumDeleteSum(String s1, String s2,int v1,int v2,int[][]dp) 
-    {
-        if(v1==s1.length()&&v2==s2.length())
-        return 0;
-        if(v1==s1.length()&&v2!=s2.length())
+        
+        if(j==s2.length())
         {
-            return sum(s2,v2);
+            int count=0;
+            while(i<s1.length())
+            {
+                count+=s1.charAt(i);
+                i++;
+            }
+            return count;
         }
-        if(v1!=s1.length()&&v2==s2.length())
+        
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        
+        int min=Integer.MAX_VALUE;
+        if(s1.charAt(i)==s2.charAt(j))
         {
-            return sum(s1,v1);
-        }
-        char ch=s1.charAt(v1);
-        char ch1=s2.charAt(v2);
-    
-        if(dp[v1][v2]!=-1)
-        return dp[v1][v2];
-        if(ch==ch1)
-        {
-           dp[v1][v2]=minimumDeleteSum(s1,s2,v1+1,v2+1,dp);
+            min=helper(s1,s2,i+1,j+1,dp);
         }
         else
         {
-            int a=minimumDeleteSum(s1,s2,v1+1,v2,dp)+(int)(s1.charAt(v1));
-            int b= minimumDeleteSum(s1,s2,v1,v2+1,dp)+(int)(s2.charAt(v2));
-           dp[v1][v2]= Math.min(a,b);
+            min=Math.min(s1.charAt(i)+helper(s1,s2,i+1,j,dp),s2.charAt(j)+helper(s1,s2,i,j+1,dp));
         }
-        return dp[v1][v2];
-        
+        return dp[i][j]=min;
     }
-    public int minimumDeleteSum(String s1,String s2)
-    {
+    public int minimumDeleteSum(String s1, String s2) {
         int dp[][]=new int[s1.length()][s2.length()];
-        for(int i=0;i<s1.length();i++)
-        {
-            for(int j=0;j<s2.length();j++)
-            {
-                dp[i][j]=-1;
-            }
-        }
-        return minimumDeleteSum(s1,s2,0,0,dp);
+        Arrays.stream(dp).forEach(a -> Arrays.fill(a, -1));
+        return helper(s1,s2,0,0,dp);
     }
 }
